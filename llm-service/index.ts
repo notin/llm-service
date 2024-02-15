@@ -15,15 +15,15 @@ const io = new Server(server, {
   },
 });
 
-io.on("connection", (socket) => {
+io.on("connection", (socket: any) => {
   console.log(`User Connected: ${socket.id}`);
 
-  socket.on("join_room", (data) => {
+  socket.on("join_room", (data: any) => {
     console.log(`User Joined Room: ${data}`);
     socket.join(data);
   });
 
-  socket.on("send_message", (data) => {
+  socket.on("send_message", (data: any) => {
     console.log(`Message: ${data.message}`);
     socket.to(data.room).emit("receive_message", data);
   });
@@ -31,22 +31,22 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log("User Disconnected");
   });
-  socket.on("error", (error) => {
+  socket.on("error", (error: any) => {
     console.log(error);
   });
-  socket.on("connect_error", (error) => {
+  socket.on("connect_error", (error: any) => {
     console.log(error);
   });
-  socket.on("connect_timeout", (timeout) => {
+  socket.on("connect_timeout", (timeout: any) => {
     console.log(timeout);
   });
-  socket.on("reconnect", (attemptNumber) => {
+  socket.on("reconnect", (attemptNumber: any) => {
     console.log(attemptNumber);
   });
-  socket.on("reconnect_attempt", (attemptNumber) => {
+  socket.on("reconnect_attempt", (attemptNumber: any) => {
     console.log(attemptNumber);
   });
-  socket.on("reconnecting", (attemptNumber) => {
+  socket.on("reconnecting", (attemptNumber: any) => {
     console.log(attemptNumber);
   });
 });
