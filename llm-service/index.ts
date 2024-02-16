@@ -27,8 +27,9 @@ io.on("connection", (socket: any) => {
 
   socket.on("send_message", async (data: any) => {
     console.log(`Message: ${data.message}`);
-    await manageConversation(data.room, data.message);
-    socket.to(data.chat).emit("receive_message", data);
+    let chatCompletion = await manageConversation(data.room, data.message);
+    socket.to(data.room).emit("receive_message", chatCompletion);
+    socket.in(data.room).emit("receive_message", chatCompletion);
   });
 
   socket.on("disconnect", () => {

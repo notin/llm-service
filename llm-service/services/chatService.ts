@@ -51,14 +51,15 @@ export async function manageConversation(id: string, prompt: string) {
         }
     }
 
-    let response = await callChatGPTAPI(asPrompt);
-
-    if (response) {
+    let completion = await callChatGPTAPI(asPrompt);
+    let response = completion?.choices[0]?.message?.content ?? "Message not found";
+    if (completion) {
         let map = conversationMap.get(id);
         let history = map?.get("AI");
         if (history) {
             //@ts-ignore
-            history.push(response.choices[0].message.content);
+
+            history.push(response);
         }
     }
     return response;
