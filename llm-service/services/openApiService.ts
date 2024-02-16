@@ -1,6 +1,33 @@
 import axios from 'axios';
-
+require('dotenv').config();
+//@ts-ignore
+import {Configuration, OpenApi} from 'openai';
 export const callChatGPTAPI = async (prompt: string) => {
+    const apiKey = process.env.ApiKey; // Replace with your actual OpenAI API key
+    const orgId = process.env.OrgId; // Replace with your actual OpenAI API key
+
+    const configuration = new Configuration({
+        apiKey: apiKey,
+        organization : orgId,
+    });
+    const openai = new OpenApi(configuration);
+    const response = await openai.createChatCompletion({
+        model: 'gpt-4-0125-preview', // Specify the model
+        messages: [
+            {
+                role: 'system',
+                content: 'You are a helpful assistant.'
+            },
+            {
+                role: 'user',
+                content: prompt
+            }
+        ]
+    });
+    return response.data;
+};
+
+export const callChatGPTAPIDirectCall = async (prompt: string) => {
     const apiKey = process.env.ApiKey; // Replace with your actual OpenAI API key
     const url = 'https://api.openai.com/v1/engines/gpt-4-turbo/completions';
 
