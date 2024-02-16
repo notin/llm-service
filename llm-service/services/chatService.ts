@@ -1,4 +1,4 @@
-import {callChatGPTAPI} from "./openApiService";
+import {callChatGPTAPI, callChatGPTAPIDirectCall} from "./openApiService";
 
 const conversationMap = new Map<string, Map<string,string[]| undefined>|undefined>();
 export async function manageConversation(id: string, prompt: string) {
@@ -58,7 +58,8 @@ export async function manageConversation(id: string, prompt: string) {
         let map = conversationMap.get(id);
         let history = map?.get("AI");
         if (history) {
-            history.push(response.choices[0].text);
+            //@ts-ignore
+            history.push(response.choices[0].message.content);
         }
     }
     return response;
