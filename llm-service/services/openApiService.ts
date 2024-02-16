@@ -1,7 +1,7 @@
 import axios from 'axios';
 require('dotenv').config();
 //@ts-ignore
-import OpenApi from 'openai';
+import OpenApi, {Message} from 'openai';
 export const callChatGPTAPI = async (prompt: string) => {
     const apiKey = process.env.ApiKey; // Replace with your actual OpenAI API key
     const orgId = process.env.OrgId; // Replace with your actual OpenAI API key
@@ -22,6 +22,36 @@ export const callChatGPTAPI = async (prompt: string) => {
         return null;
     }
 };
+
+export const callChatGPTAPIWithAttachment = async (prompt: string, attachmentContent?: string) => {
+    const apiKey = process.env.ApiKey; // Replace with your actual OpenAI API key
+    const orgId = process.env.OrgId; // Replace with your actual OpenAI organization ID
+
+    try {
+        const openai = new OpenApi({
+            apiKey: apiKey,
+            organization: orgId
+        });
+
+        let messages: Message[] = [{ role: "user", content: prompt }];
+
+        // If there is an attachment content, add it as a system message
+        if (attachmentContent) {
+            messages.push({ role: "system", content: attachmentContent });
+        }
+
+        const chatCompletion = await openai.chat.completions.create({
+            messages: messages,
+            model: "gpt-4-0125-preview",
+        });
+
+        return chatCompletion;
+    } catch (error) {
+        console.error('Error calling the ChatGPT API:', error);
+        return null;
+    }
+};
+
 
 export const callChatGPTAPIDirectCall = async (prompt: string) => {
     const apiKey = process.env.ApiKey; // Replace with your actual OpenAI API key

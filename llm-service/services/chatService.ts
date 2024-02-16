@@ -40,7 +40,6 @@ export async function manageConversation(id: string, prompt: string) {
        //@ts-ignore
         map.set("User", [prompt]);
         conversationMap.set(id, map);
-
     }
     for (let i = 0; (map.get("User") && i < (map.get("User")?.length ?? 0)); i++) {
 
