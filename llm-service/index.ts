@@ -1,3 +1,5 @@
+import {manageConversation} from "./services/chatService";
+
 const express = require("express");
 const app = express();
 const http = require("http");
@@ -23,9 +25,10 @@ io.on("connection", (socket: any) => {
     socket.join(data);
   });
 
-  socket.on("send_message", (data: any) => {
+  socket.on("send_message", async (data: any) => {
     console.log(`Message: ${data.message}`);
-    socket.to(data.room).emit("receive_message", data);
+    await manageConversation(data.room, data.message);
+    socket.to(data.chat).emit("receive_message", data);
   });
 
   socket.on("disconnect", () => {
