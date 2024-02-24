@@ -1,9 +1,10 @@
 import {manageConversation} from "./services/chatService";
 
-const express = require("express");
+import * as http from "http";
+
+import express from "express";
 const app = express();
-const http = require("http");
-const { Server } = require("socket.io");
+import { Server }  from "socket.io";
 const cors = require("cors");
 
 app.use(cors());
