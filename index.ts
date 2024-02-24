@@ -1,10 +1,9 @@
 import {manageConversation} from "./services/chatService";
 
-import * as http from "http";
-
-import express from "express";
+const express = require("express");
 const app = express();
-import { Server }  from "socket.io";
+const http = require("http");
+const { Server } = require("socket.io");
 const cors = require("cors");
 
 app.use(cors());
@@ -31,6 +30,7 @@ io.on("connection", (socket: any) => {
     let chatCompletion = await manageConversation(data.room, data.message);
     socket.to(data.room).emit("receive_message", chatCompletion);
     socket.in(data.room).emit("receive_message", chatCompletion);
+    socket.emit("receive_message", chatCompletion);
   });
 
   socket.on("disconnect", () => {
