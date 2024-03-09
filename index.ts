@@ -27,7 +27,14 @@ io.on("connection", (socket: any) => {
 
   socket.on("send_message", async (data: any) => {
     console.log(`Message: ${data.message}`);
-    let chatCompletion = await manageConversation(data.room, data.message);
+
+    let chatCompletion;
+    if (!data.attachments) {
+      chatCompletion = await manageConversation(data.room, data.message);
+    }
+    else {
+      chatCompletion=  await manageConversation(data.room, data.message, data.attachments);
+    }
     socket.to(data.room).emit("receive_message", chatCompletion);
     socket.in(data.room).emit("receive_message", chatCompletion);
     socket.emit("receive_message", chatCompletion);
