@@ -1,7 +1,9 @@
-import {callChatGPTAPI, callChatGPTAPIDirectCall} from "./openApiService";
+import {callChatGPTAPI, callChatGPTAPIDirectCall, callChatGPTAPIWithAttachment} from "./openApiService";
+import OpenAI from "openai/index";
+import ChatCompletion = OpenAI.ChatCompletion;
 
 const conversationMap = new Map<string, Map<string,string[]| undefined>|undefined>();
-export async function manageConversation(id: string, prompt: string) {
+export async function manageConversation(id: string, prompt: string, attachmentContent?: string) {
     let map = new Map<string, string[]| undefined>();
     let asPrompt = "";
     let history= [prompt] as unknown as string[]; // Initialize 'history' with an empty array containing 'prompt'
@@ -50,15 +52,19 @@ export async function manageConversation(id: string, prompt: string) {
             asPrompt += ` AI: "${map.get("AI")?.[i]}"`;
         }
     }
-
-    let completion = await callChatGPTAPI(asPrompt);
-    let response = completion?.choices[0]?.message?.content ?? "Message not found";
+    let completion : ChatCompletion | null;
+    if(!attachmentContent) {
+         completion = await callChatGPTAPI(asPrompt);
+    }
+    else {
+         completion = await callChatGPTAPIWithAttachment(asPrompt, attachmentContent);
+    }
+    let response = completion!==null ? completion?.choices[0]?.message?.content ?? "Message not found" : "Message not found";
     if (completion) {
         let map = conversationMap.get(id);
         let history = map?.get("AI");
         if (history) {
             //@ts-ignore
-
             history.push(response);
         }
     }

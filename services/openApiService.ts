@@ -29,7 +29,6 @@ export const callChatGPTAPIWithAttachment = async (prompt: string, attachmentCon
     try {
         const openai = new OpenApi({
             apiKey: apiKey,
-            organization: orgId
         });
 
         let messages: Message[] = [{ role: "user", content: prompt }];
