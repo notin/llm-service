@@ -4,12 +4,11 @@ require('dotenv').config();
 import OpenApi, {Message} from 'openai';
 export const callChatGPTAPI = async (prompt: string) => {
     const apiKey = process.env.ApiKey; // Replace with your actual OpenAI API key
-    const orgId = process.env.OrgId; // Replace with your actual OpenAI API key
+
 
     try {
         const openai = new OpenApi({
             apiKey: apiKey,
-            organization : orgId
         });
         const chatCompletion = await openai.chat.completions.create({
             messages: [{ role: "user", content: prompt }],
