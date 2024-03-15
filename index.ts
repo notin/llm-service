@@ -29,6 +29,7 @@ io.on("connection", (socket: any) => {
     console.log(`Message: ${data.message}`);
 
     let chatCompletion;
+    console.log(chatCompletion);
     if (!data.attachments) {
       chatCompletion = await manageConversation(data.room, data.message);
     }
