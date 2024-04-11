@@ -1,4 +1,4 @@
-import {manageConversation} from "./services/chatService";
+import {manageConversation} from "./src/services/chatService";
 
 const express = require("express");
 const app = express();
