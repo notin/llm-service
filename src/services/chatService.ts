@@ -55,5 +55,5 @@ export async function manageConversation(id: string, prompt: string, attachmentC
         response = completion?.choices[0]?.message?.content as string;
         promptAndResponse.response = response;
     }
-    return response;
+    return promptAndResponse;
 }
